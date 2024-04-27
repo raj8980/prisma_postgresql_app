@@ -14,4 +14,30 @@ async function insertUser(username : string, password:string, firstName:string, 
     })
 }
 
-insertUser('test','test','test','test');
+async function insertTodo (title: string, description: string, userId: number){
+    await prisma.todo.create({
+        data:{
+            title: title,
+            description: description,
+            userId: userId
+        }
+    })
+}
+
+async function getTodosAndUserDetails(userId:number) {
+    const response = await prisma.todo.findMany({
+        where:{
+            userId: userId
+        },
+        select:{
+            id: true,
+            title:true,
+            description: true,
+            user: true
+        }
+    })
+    console.log("response:", response);
+}
+
+insertTodo("MERN_LEARN","Complete mern learning by this month", 1);
+getTodosAndUserDetails(1);

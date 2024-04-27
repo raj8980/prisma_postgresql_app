@@ -23,4 +23,32 @@ function insertUser(username, password, firstName, lastName) {
         });
     });
 }
-insertUser('test', 'test', 'test', 'test');
+function insertTodo(title, description, userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield prisma.todo.create({
+            data: {
+                title: title,
+                description: description,
+                userId: userId
+            }
+        });
+    });
+}
+function getTodosAndUserDetails(userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield prisma.todo.findMany({
+            where: {
+                userId: userId
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                user: true
+            }
+        });
+        console.log("response:", response);
+    });
+}
+insertTodo("MERN_LEARN", "Complete mern learning by this month", 1);
+getTodosAndUserDetails(1);
